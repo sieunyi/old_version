@@ -1,0 +1,48 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+{% load custom_filters %}
+
+{% block title %}
+   Individual Round {{ player.round_number }} of {{ Constants.individual_rounds }}
+{% endblock %}
+
+{% block content %}
+
+    <p>Your success number is:  <span style="color: blue; font-weight: bold;">{{ player.success_number }}</span></p>
+
+    <p id="rollResult" style="font-size: 100px;">&#9856;</p>
+
+    <button id="rollButton" onclick="rollDice()">Throw your dice!</button>
+
+    <div id="nextButtonDiv" style="display: none;">
+        {% next_button %}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        const dicefaces = ['&#9856;', '&#9857;', '&#9858;', '&#9859;', '&#9860;', '&#9861;'];
+        const finalRoll = {{ player.dice_roll }};
+
+        function rollDice() {
+            const rollResult = document.getElementById('rollResult');
+            const rollButton = document.getElementById('rollButton');
+            const nextButtonDiv = document.getElementById('nextButtonDiv');
+
+            rollButton.disabled = true;
+            let rolls = 0;
+            const maxRolls = 10;
+
+            const rollInterval = setInterval(() => {
+                rollResult.innerHTML = dicefaces[Math.floor(Math.random() * 6)];
+                rolls++;
+
+                if (rolls >= maxRolls) {
+                    clearInterval(rollInterval);
+                    rollResult.innerHTML = dicefaces[finalRoll - 1];
+                    nextButtonDiv.style.display = 'block';
+                }
+            }, 100);
+        }
+    </script>
+{% endblock %}

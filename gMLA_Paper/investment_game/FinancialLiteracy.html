@@ -1,0 +1,42 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+{% endblock %}
+
+{% block content %}
+
+<ol>
+    <li class="mb-3">
+        <p>If you buy a drink for 6 dollars and pay with a ten dollar bill, how much change should you get in dollars? </p>
+        {% formfield player.fin_change %}
+    </li>
+
+    <li class="mb-3">
+        <p>If 5 people all have the winning numbers in the lottery and the prize is $2 million, how much will each of them get in dollars? </p>
+        {% formfield player.fin_lottery %}
+    </li>
+
+    <li class="mb-3">
+        <p>In a sale, a shop is selling all items at half price. Before the sale, a sofa costs $300. How much will it cost in the sale in dollars? </p>
+        {% formfield player.fin_sale %}
+    </li>
+
+    <li class="mb-3">
+        <p>If the chance of getting a disease is 10 percent, how many people out of 1,000 would be expected to get the disease?</p>
+        {% formfield player.fin_disease %}
+    </li>
+    <li class="mb-3">
+        <p>A second hand car dealer is selling a car for $6,000. This is two-thirds of what it cost new. How much did the car cost new in dollars?</p>
+        {% formfield player.fin_cardealer %}
+    </li>
+
+    <li class="mb-3">
+        <p>Let's say you have $200 in a savings account. The account earns 10% interest per year. How much will you have in the account in dollars at the end of two years? </p>
+        {% formfield player.fin_interest %}
+    </li>
+</ol>
+
+{% next_button %}
+
+{% endblock %}

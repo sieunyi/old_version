@@ -1,0 +1,17 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+{% load custom_filters %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block content %}
+  <h3>You have completed {{ Constants.individual_rounds }} rounds of individual investment.</h3>
+
+<p>Your total investment earnings so far: <span style="color: black; font-weight: bold;">{{ total_earnings }}</span></p>
+
+<p>Please type 'Continue' to proceed to the group investment rounds:</p>
+{% formfields %}
+{% next_button %}
+{% endblock %}

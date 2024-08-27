@@ -1,0 +1,30 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+{% endblock %}
+
+{% block content %}
+<h3>Group Investment Rounds</h3>
+
+<p>You are about to begin the group investment rounds. Partners will be randomly assigned and you will repeat this investment game in groups.</p>
+
+<p>In these rounds:</p>
+<ul>
+    <li>You can invest up to $2 in increments of $0.5 in each round.</li>
+    <li>You will work with a partner to make investment decisions.</li>
+    <li>You can communicate with your partner <strong>only</strong> through the chat. External discussion is not allowed.</li>
+    <li>Your group will have a shared success number for each round.</li>
+    <li>Participants will equally share the profits or losses that your group achieves from the investment.</li>
+    <li>Use the slider to choose the investment amount after discussing it with your partner.</li>
+    <li>Once you have agreed on an investment amount, click the "Agree on Investment" button.</li>
+    <li>After one person clicks "Agree on Investment", the investment amount can no longer be adjusted.</li>
+    <li>Both partners must agree on the investment amount to continue.</li>
+</ul>
+
+<p>Remember that effective communication and mutual agreement are key to successful group decisions.</p>
+
+<p>Click the button below when you are ready to begin.</p>
+
+    {% next_button %}
+{% endblock %}

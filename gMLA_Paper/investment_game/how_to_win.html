@@ -1,0 +1,20 @@
+{% extends "global/Page.html" %}
+{% block title %}{% endblock %}
+
+{% block content %}
+<h2>How to Win (Rules)</h2>
+<p></p>
+<ul>
+    <li>The first part of the game consists of 3 successive rounds of investment decisions.</li>
+    <li>In each round, you can invest up to $1 in increments of $0.25.</li>
+    <li>You will be assigned a "success number" between 1 and 6.</li>
+    <li>You will roll a virtual six-sided die.</li>
+    <li>If the result of the die matches your "success number", the investment is successful.</li>
+    <li>In the next round, you will be assigned to a new "success number" and repeat this process.</li>
+
+</ul>
+
+<p>The probability of success is 1/6 (17%), while the probability of failure is 5/6 (83%).</p>
+
+{% next_button %}
+{% endblock %}

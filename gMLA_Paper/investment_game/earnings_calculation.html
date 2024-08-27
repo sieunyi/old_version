@@ -1,0 +1,24 @@
+{% extends "global/Page.html" %}
+{% block title %}{% endblock %}
+
+{% block content %}
+<h2>Earning Calculation</h2>
+<ul>
+    <li>Successful investment: You earn 6 times the amount invested.</li>
+    <li>Failed investment: You lose the amount invested.</li>
+    <li>Money not invested in each round is added to your earnings.</li>
+    <li>Your earnings will be reported at the end of each round.</li>
+    <li>At the end of the individual part, your total result will be calculated.</li>
+</ul>
+
+<h2>For example,</h2>
+
+    <li>Successful investment: You earn 6 times the amount invested.</li>
+Your "success number" was 4. Your die rolled a 4. This case is a "Success", you won. If you decided to invest $1 (which is within the $1 limit and in $0.25 increments), you will receive 1*6 = $6.</p>
+
+ <li>Failed investment: You pay the amount invested.</li>
+Your "success number" was 3, but your die rolled a 4. This case is a "Failure", you lost. If you decided to invest $0.5, you will pay $0.5.
+
+
+{% next_button %}
+{% endblock %}

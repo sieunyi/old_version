@@ -1,0 +1,24 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Demographic Survey
+{% endblock %}
+
+{% block content %}
+    <p>Please answer the following questions:</p>
+
+    <div class="mb-3">
+        {% formfield player.age %}
+    </div>
+
+    <div class="mb-3">
+        {% formfield player.gender %}
+    </div>
+
+    <div class="mb-3">
+        {% formfield player.major %}
+    </div>
+
+    {% next_button %}
+{% endblock %}

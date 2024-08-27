@@ -1,0 +1,51 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+{% load custom_filters %}
+
+{% block title %}
+{% endblock %}
+
+{% block content %}
+
+<p>Total group earnings: <strong id="totalGroupEarnings">{{ total_group_earnings }}</strong></p>
+<p>Individual earnings: <strong id="individualEarnings"></strong></p>
+<p>Now remember this investment amount.</p>
+<p>You can go to the cashier to exchange your investment amount. If your investment amount is negative, you have to pay the cashier. If it's positive, you will be paid.</p>
+<p>Click "next" when you have exchanged your money.</p>
+{% next_button %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        function formatAmount(element) {
+            var amountText = element.innerText;
+            var numericValue = amountText.replace(/[^\d.-]/g, '');
+            var formattedValue = parseFloat(numericValue).toFixed(2);
+            element.innerText = '$' + formattedValue;
+
+            // Set color based on value
+            if (parseFloat(formattedValue) >= 0) {
+                element.style.color = 'blue';
+            } else {
+                element.style.color = 'red';
+            }
+        }
+
+        var groupEarningsElement = document.getElementById('totalGroupEarnings');
+        formatAmount(groupEarningsElement);
+
+        var groupEarnings = parseFloat(groupEarningsElement.innerText.replace('$', ''));
+        var individualEarnings = groupEarnings / 2;
+
+        var individualEarningsElement = document.getElementById('individualEarnings');
+        individualEarningsElement.innerText = '$' + individualEarnings.toFixed(2);
+
+        // Set color for individual earnings
+        if (individualEarnings >= 0) {
+            individualEarningsElement.style.color = 'blue';
+        } else {
+            individualEarningsElement.style.color = 'red';
+        }
+    });
+</script>
+
+{% endblock %}

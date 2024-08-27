@@ -1,0 +1,40 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+{% load custom_filters %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+    <p>Your group's total earnings for the three rounds are: <span style="color: blue; font-weight: bold;" id="totalGroupEarnings">${{ total_earnings }}</span></p>
+
+    <hr style="border-top: 1px solid #ccc; margin: 20px 0;">
+    <p>The individual earnings are: <span style="color: green; font-weight: bold;" id="individualEarnings"></span></p>
+
+
+    <hr style="border-top: 1px solid #ccc; margin: 20px 0;">
+    <p>Please type 'continue' in the box below to determine your final investment earnings.</p>
+
+    {% formfield 'close_field' label="" %}
+
+    {% next_button %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function formatAmount(element) {
+                var amountText = element.innerText;
+                var numericValue = amountText.replace(/[^\d.-]/g, '');
+                var formattedValue = parseFloat(numericValue).toFixed(2);
+                element.innerText = '$' + formattedValue;
+            }
+
+            var groupEarningsElement = document.getElementById('totalGroupEarnings');
+            formatAmount(groupEarningsElement);
+
+            var groupEarnings = parseFloat(groupEarningsElement.innerText.replace('$', ''));
+            var individualEarnings = groupEarnings / 2;
+
+            var individualEarningsElement = document.getElementById('individualEarnings');
+            individualEarningsElement.innerText = '$' + individualEarnings.toFixed(2);
+        });
+    </script>
+{% endblock %}

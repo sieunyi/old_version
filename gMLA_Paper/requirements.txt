@@ -1,0 +1,4 @@
+otree==5.10.4
+psycopg2-binary==2.9.9
+dj-database-url==0.5.0
+whitenoise==5.3.0

@@ -1,0 +1,23 @@
+{% extends "global/Page.html" %}
+{% block title %}{% endblock %}
+{% block content %}
+<p>Welcome to our investment game, this will be an exercise in decision-making. It will last approximately 20 minutes. Based on what you earn, you can exchange your money for goods at the end of this game. You will receive a gift for participating, and additionally, you may receive something extra according to your performance, which will depend on your choices.</p>
+
+<p>This game consists of two parts: an individual part and a group part. After the individual rounds, this game will be repeated in groups.</p>
+
+<p>The first part of the game consists of 3 successive rounds of investment decisions. You will receive $3 to invest. In each round, you must decide if you want to invest up to $1 in increments of $0.25 according to the following lottery.</p>
+
+With a probability of 1/6 (17%), the lottery will "succeed" and you will win 6 times the amount you invested.
+With a probability of 5/6 (83%), the lottery will "fail" and you will lose the money you invested.
+
+<p>The success or failure of the lottery will be determined as follows. In each round, you will be assigned a "success number" between 1 and 6, which will be shown on the screen. After indicating the amount you want to invest in the lottery, you will move to another screen where you will have to click on a six-sided die. If the result of the die is equal to your "winning number", the lottery is a "success" and you will win 6 times the amount you invested. If the result is any other number, you will lose the amount you invested. The money not invested in each round will be yours to keep.</p>
+
+<p>Your investment earnings from the lottery will be reported at the end of each round. For the next round, you will be assigned a new "success number" and presented with the same decision.</p>
+
+<p>At the end of the third round, your result will be calculated. </p>
+
+<p>You will move on to the next part; there you will make another investment decision. The earnings in this part will be given in the form of a separate bonus.</p>
+
+<p>This first part of the game ends, there will be a short break. Afterwards, pairs will be randomly assigned and, in groups, you will repeat this investment game again.</p>
+    {% next_button %}
+{% endblock %}

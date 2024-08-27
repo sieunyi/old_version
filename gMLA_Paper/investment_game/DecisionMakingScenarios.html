@@ -1,0 +1,24 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block content %}
+
+<ol>
+    <li class="mb-3">
+        <p>Imagine that you will receive $100 if you can correctly guess the color of a ball drawn randomly from a jar. You can choose between two jars, both have ten balls and each ball is either red or black. Jar 1 has 5 red balls and 5 black balls. The number of black balls in jar 2 was determined as follows: A ticket was drawn from a bag containing 11 tickets with numbers from 0 to 10 written on them. The number written on the drawn ticket determined the number of black balls. You can choose whether the randomly drawn ball comes from jar 1 or jar 2.</p>
+        {% formfield player.scenario_jar %}
+    </li>
+
+    <li class="mb-3">
+        <p>Imagine that you're on a game show, and you're given the choice of three doors. Behind one door is a car; behind the others, goats. You pick a door, say No. 1, and the host, who knows what's behind the doors, opens another door, say No. 3, which has a goat. He then says to you, "Do you want to pick door No. 2?" Is it to your advantage to switch your choice?</p>
+        {% formfield player.monty_hall %}
+    </li>
+</ol>
+
+{% next_button %}
+
+{% endblock %}

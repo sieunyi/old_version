@@ -1,0 +1,54 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Demographic Information
+{% endblock %}
+
+{% block content %}
+
+<ol>
+    <li class="mb-3">
+        {% formfield player.age_check %}
+    </li>
+
+    <li class="mb-3">
+        {% formfield player.gender %}
+    </li>
+
+    <li class="mb-3">
+        {% formfield player.career %}
+    </li>
+
+    <li class="mb-3">
+        {% formfield player.native_language %}
+    </li>
+
+    <li class="mb-3">
+        {% formfield player.university_year %}
+    </li>
+
+    <li class="mb-3">
+        {% formfield player.gpa %}
+    </li>
+
+    <li class="mb-3">
+        {% formfield player.smoker %}
+    </li>
+
+    <li class="mb-3">
+        {% formfield player.alcohol %}
+    </li>
+
+    <li class="mb-3">
+        {% formfield player.drugs %}
+    </li>
+
+    <li class="mb-3">
+        {% formfield player.weekly_spending %}
+    </li>
+</ol>
+
+{% next_button %}
+
+{% endblock %}

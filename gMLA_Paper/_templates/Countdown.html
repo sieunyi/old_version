@@ -1,0 +1,26 @@
+{% extends "global/Page.html" %}
+{% block content %}
+    <h1>Countdown</h1>
+    <p>The page will proceed in <span id="countdown">{{ remaining_seconds }}</span> seconds.</p>
+
+    <script>
+        var timeLeft = {{ remaining_seconds }};
+        var countdownElement = document.getElementById("countdown");
+
+        function updateCountdown() {
+            if (timeLeft <= 0) {
+                return;
+            }
+            timeLeft -= 1;
+            countdownElement.textContent = timeLeft;
+
+            if (timeLeft > 0) {
+                setTimeout(updateCountdown, 1000);
+            } else {
+                window.location.href = "{{ next_page_url }}";
+            }
+        }
+
+        setTimeout(updateCountdown, 1000);
+    </script>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Risk Attitudes
+{% endblock %}
+
+{% block content %}
+
+<p>On a scale of 1 to 10, where 1 is "Not at all willing" and 10 is "Completely willing":</p>
+
+<ol>
+    <li class="mb-3">
+        {% formfield player.risk_general %}
+    </li>
+
+    <li class="mb-3">
+        {% formfield player.risk_driving %}
+    </li>
+
+    <li class="mb-3">
+        {% formfield player.risk_career %}
+    </li>
+
+    <li class="mb-3">
+        {% formfield player.risk_health %}
+    </li>
+</ol>
+
+{% next_button %}
+
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+{% load custom_filters %}
+
+{% block title %}
+Group Round {{ group_round }} of {{ total_group_rounds }}
+{% endblock %}
+
+{% block content %}
+    <p>Your group's success number for this round is: <span style="color: blue; font-weight: bold;">{{ success_number }}</span></p>
+    <p>Your group has $ 2 to invest.</p>
+    <p>Use the chat box below to discuss your investment decision with your partner:</p>
+    {% chat %}
+
+    <hr style="border-top: 1px solid #ccc; margin: 20px 0;">
+   <h2>We would like to invest:</h2>
+    <div class="slider-container" style="width: 100%; margin: 20px 0;">
+        <input type="range" id="investment-slider" min="0" max="2" step="0.5" value="{{ group_investment }}" style="width: 100%;" oninput="updateInvestment(this.value)">
+        <div class="slider-labels" style="display: flex; justify-content: space-between; margin-top: 10px;">
+            <span>0</span>
+            <span>0.5</span>
+            <span>1</span>
+            <span>1.5</span>
+            <span>2</span>
+        </div>
+    </div>
+    <div id="player-data" data-player-id="{{ player.id_in_group }}" style="display: none;"></div>
+    <p>Investment amount: $<span id="investment-value">{{ group_investment }}</span></p>
+
+    {{ formfield_errors 'group_investment' }}
+    <input type="hidden" name="group_investment" id="group_investment_input" value="{{ group_investment }}">
+
+    <button id="agree-button" onclick="agreeOnInvestment()">Agree on Investment</button>
+    <p id="you-agreed-message" style="display: none;">You have agreed on the investment amount. Waiting for your partner...</p>
+    <p id="partner-agreed-message" style="display: none;">Your partner has agreed on the investment amount. Please review and accept if you are satisfied.</p>
+    <p id="investment-mismatch" style="display: none; color: red;">The investment amounts do not match. Please discuss and choose again.</p>
+    <p id="investment-match" style="display: none; color: green;">The investment amounts match. You can now continue.</p>
+    <div id="nextButtonDiv" style="display: none;">
+        {% next_button %}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+var playerId = parseInt(document.getElementById('player-data').getAttribute('data-player-id'));
+var agreed = false;
+var myInvestment = null;
+
+function updateInvestment(value) {
+    console.log("Slider value:", value);  // Log the value
+    value = parseFloat(value).toFixed(1);  // One decimal place
+    document.getElementById('investment-value').innerHTML = value;
+    document.getElementById('group_investment_input').value = value;
+    document.getElementById('investment-slider').value = value;
+    liveSend({type: 'investment', value: value});
+}
+
+function agreeOnInvestment() {
+    agreed = true;
+    myInvestment = parseFloat(document.getElementById('group_investment_input').value).toFixed(1);
+    liveSend({type: 'agree', value: myInvestment});
+    document.getElementById('agree-button').style.display = 'none';
+    document.getElementById('investment-slider').disabled = true;
+    document.getElementById('you-agreed-message').style.display = 'block';
+    document.getElementById('nextButtonDiv').style.display = 'none';
+}
+
+function liveRecv(data) {
+    if (data.type === 'investment') {
+        if (!agreed) {
+            var value = parseFloat(data.value).toFixed(1);  // One decimal place
+            document.getElementById('investment-value').innerHTML = value;
+            document.getElementById('investment-slider').value = value;
+            document.getElementById('group_investment_input').value = value;
+        }
+    } else if (data.type === 'agree') {
+        if (data.id !== playerId) {
+            document.getElementById('partner-agreed-message').style.display = 'block';
+            document.getElementById('investment-slider').disabled = true;
+            document.getElementById('agree-button').disabled = true;
+            document.getElementById('nextButtonDiv').style.display = 'block';
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    var slider = document.getElementById('investment-slider');
+    var initialValue = slider.value || '0';  // Default to 1 if not set
+    updateInvestment(initialValue);
+});
+</script>
+{% endblock %}

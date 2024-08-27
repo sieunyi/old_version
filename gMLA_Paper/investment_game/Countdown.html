@@ -1,0 +1,29 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+{% block content %}
+
+    <script>
+        var timeLeft = 60;
+        var countdownElement = document.getElementById("countdown");
+
+        function updateCountdown() {
+            if (timeLeft <= 0) {
+                return;
+            }
+            timeLeft -= 1;
+            countdownElement.textContent = timeLeft;
+
+            if (timeLeft > 0) {
+                setTimeout(updateCountdown, 1000);
+            }
+        }
+
+        setTimeout(updateCountdown, 1000);
+    </script>
+
+    <h2> Important:</h2>
+    <ul>
+   <li>Please do not leave this page.</li>
+    </ul>
+
+{% endblock %}

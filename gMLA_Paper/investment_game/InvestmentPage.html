@@ -1,0 +1,51 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+   Individual Round {{ player.round_number }} of {{ Constants.individual_rounds }}
+{% endblock %}
+
+{% block content %}
+<hr style="border-top: 1px solid #ccc; margin: 20px 0;">
+
+<p>Your success number for this round is: <span style="color: blue; font-weight: bold;">{{ player.success_number }}</span></p>
+<p>You have $1 to invest in this round.</p>
+<hr style="border-top: 1px solid #ccc; margin: 20px 0;">
+
+<p>Please choose your investment amount:</p>
+<h2>I would like to invest:</h2>
+    <div class="slider-container" style="width: 100%; margin: 20px 0;">
+        <input type="range" id="investment-slider" min="0" max="1" step="0.25" value="0" style="width: 100%;" oninput="updateInvestment(this.value)">
+        <div class="slider-labels" style="display: flex; justify-content: space-between; margin-top: 10px;">
+            <span>0</span>
+            <span>0.25</span>
+            <span>0.5</span>
+            <span>0.75</span>
+            <span>1</span>
+        </div>
+    </div>
+
+    <p>Investment amount: $<span id="investment-value">0.00</span></p>
+
+    <input type="hidden" name="investment" id="id_investment" value="0">
+
+    {{ formfield_errors 'investment' }}
+
+    {% next_button %}
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        function updateInvestment(value) {
+            value = parseFloat(value).toFixed(2);
+            document.getElementById('investment-value').innerHTML = value;
+            document.getElementById('id_investment').value = value;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var slider = document.getElementById('investment-slider');
+            var initialValue = slider.value || '0.5';
+            updateInvestment(initialValue);
+        });
+    </script>
+{% endblock %}

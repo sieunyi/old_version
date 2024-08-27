@@ -1,0 +1,29 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+{% load custom_filters %}
+
+{% block title %}
+{% endblock %}
+
+{% block content %}
+
+    <p>Your total earnings are: <span style="color: blue; font-weight: bold;" id="totalEarnings">{{ total_earnings }}</span></p>
+    <p>Now remember this investment amount.</p>
+    <p>You can go to the cashier to exchange your investment amount. If your investment amount is negative, you have to pay the cashier. If it's positive, you will be paid.</p>
+    <p>Click "next" when you have exchanged your money and continue with the game.</p>
+
+    {% next_button %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var earningsElement = document.getElementById('totalEarnings');
+            var earningsText = earningsElement.innerText;
+
+            var numericValue = earningsText.replace(/[^\d.-]/g, '');
+
+            var formattedValue = parseFloat(numericValue).toFixed(2);
+
+            earningsElement.innerText = '$' + formattedValue;
+        });
+    </script>
+{% endblock %}

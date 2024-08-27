@@ -1,0 +1,16 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Consent Form
+{% endblock %}
+
+{% block content %}
+    <p>Please read the following statements and indicate your agreement:</p>
+
+    {% formfield player.consent_age label="I am age 18 or older." %}
+    {% formfield player.consent_read label="I have read and understand the information above." %}
+    {% formfield player.consent_participate label="I want to participate in this research and continue with the study." %}
+
+    {% next_button %}
+{% endblock %}

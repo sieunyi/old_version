@@ -1,0 +1,56 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+{% load custom_filters %}
+
+{% block title %}
+Group Round {{ group_round }} of {{ total_group_rounds }}
+{% endblock %}
+
+{% block content %}
+<p>Your group decided to invest: <span id="group_investment" style="color: blue; font-weight: bold;">{{ group_investment }}</span></p>
+
+<p>Your group's success number was: <span style="color: blue; font-weight: bold;">{{ success_number }}</span></p>
+<p>Your group got: <span style="color: {% if success %}green{% else %}red{% endif %}; font-weight: bold;">{{ dice_roll }}</span></p>
+
+<hr style="border-top: 1px solid #ccc; margin: 20px 0;">
+{% if success %}
+    <p>Investment result: <span style="color: green; font-weight: bold;">Success</span></p>
+{% else %}
+    <p>Investment result: <span style="color: red; font-weight: bold;">Failure</span></p>
+{% endif %}
+
+<hr style="border-top: 1px solid #ccc; margin: 20px 0;">
+
+<p>Group earnings in this round: <span id="group_earnings" style="color: {% if group_earnings >= 0 %}green{% else %}red{% endif %}; font-weight: bold;">{{ group_earnings }}</span></p>
+
+{% next_button %}
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var investmentElement = document.getElementById('group_investment');
+    var groupEarningsElement = document.getElementById('group_earnings');
+    var individualEarningsElement = document.getElementById('individualEarnings');
+
+    function formatCurrency(element) {
+        if (element) {
+            var value = parseFloat(element.textContent.replace('$', '').replace(' puntos', '').trim());
+            if (!isNaN(value)) {
+                element.textContent = '$' + value.toFixed(2);
+            }
+        }
+    }
+
+    formatCurrency(investmentElement);
+    formatCurrency(groupEarningsElement);
+
+    if (individualEarningsElement) {
+        var groupEarnings = parseFloat(groupEarningsElement.textContent.replace('$', ''));
+        var individualEarnings = groupEarnings / 2;
+        individualEarningsElement.textContent = '$' + individualEarnings.toFixed(2);
+    }
+});
+</script>
+{% endblock %}

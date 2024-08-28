@@ -194,6 +194,7 @@ class GroupWaitPage(WaitPage):
     def after_all_players_arrive(self):
         pass
 
+
 class GroupInvestmentPage(Page):
     form_model = 'group'
     form_fields = ['group_investment']
@@ -222,36 +223,35 @@ class GroupInvestmentPage(Page):
 
     def live_method(player, data):
         if data['type'] == 'investment':
-            # Ensuring it accepts and processes float values
             player.group.group_investment = float(data['value'])
-            player.investment_amount = float(data['value'])  # Set for individual player
+            player.investment_amount = float(data['value'])
             return {0: {'type': 'investment', 'value': player.group.group_investment}}
 
-        elif data['type'] == 'agree':
-            player.agreed_on_investment = True
-            player.investment_amount = int(float(data['value']))
-            player.group.group_investment = player.investment_amount
-            if all(p.agreed_on_investment for p in player.group.get_players()):
-                investments = [p.investment_amount for p in player.group.get_players() if
-                               p.investment_amount is not None]
+        elif data['type'] == 'propose':
+            player.proposed_investment = float(data['value'])
+            if all(p.field_maybe_none('proposed_investment') is not None for p in player.group.get_players()):
+                return {0: {'type': 'both_proposed'}}
+            else:
+                return {0: {'type': 'propose', 'id': player.id_in_group}}
+
+        elif data['type'] == 'finalize':
+            player.finalized_investment = float(data['value'])
+            if all(p.field_maybe_none('finalized_investment') is not None for p in player.group.get_players()):
+                investments = [p.finalized_investment for p in player.group.get_players()]
                 investments_match = len(set(investments)) == 1
                 if investments_match:
                     player.group.investment_agreed = True
-                return {0: {'type': 'both_agreed', 'match': investments_match}}
-            else:
-                return {0: {'type': 'agree', 'id': player.id_in_group}}
+                    player.group.group_investment = investments[0]
+                return {0: {'type': 'both_finalized', 'match': investments_match}}
 
     def before_next_page(self):
         if self.group.investment_agreed:
-            self.group.group_investment = self.player.investment_amount
-        else:
-            self.group.group_investment = self.group.field_maybe_none('group_investment') or 0
+            for p in self.group.get_players():
+                p.investment_amount = self.group.group_investment
 
         print(f"Group investment set to: {self.group.group_investment} ")
         for p in self.group.get_players():
             print(f"Player {p.id_in_group} investment amount: {p.investment_amount} ")
-
-
 class GroupInvestmentWaitPage(WaitPage):
     def is_displayed(self):
         return self.round_number > Constants.individual_rounds

@@ -13,7 +13,7 @@ Group Round {{ group_round }} of {{ total_group_rounds }}
     {% chat %}
 
     <hr style="border-top: 1px solid #ccc; margin: 20px 0;">
-   <h2>We would like to invest:</h2>
+    <h2>We would like to invest:</h2>
     <div class="slider-container" style="width: 100%; margin: 20px 0;">
         <input type="range" id="investment-slider" min="0" max="2" step="0.5" value="{{ group_investment }}" style="width: 100%;" oninput="updateInvestment(this.value)">
         <div class="slider-labels" style="display: flex; justify-content: space-between; margin-top: 10px;">
@@ -30,9 +30,10 @@ Group Round {{ group_round }} of {{ total_group_rounds }}
     {{ formfield_errors 'group_investment' }}
     <input type="hidden" name="group_investment" id="group_investment_input" value="{{ group_investment }}">
 
-    <button id="agree-button" onclick="agreeOnInvestment()">Agree on Investment</button>
-    <p id="you-agreed-message" style="display: none;">You have agreed on the investment amount. Waiting for your partner...</p>
-    <p id="partner-agreed-message" style="display: none;">Your partner has agreed on the investment amount. Please review and accept if you are satisfied.</p>
+    <button id="propose-button" onclick="proposeInvestment()">Propose Investment</button>
+    <button id="finalize-button" onclick="finalizeInvestment()" style="display: none;">Finalize Investment</button>
+    <p id="you-proposed-message" style="display: none;">You have proposed the investment amount. Waiting for your partner...</p>
+    <p id="partner-proposed-message" style="display: none;">Your partner has proposed an investment amount. You can now review and finalize.</p>
     <p id="investment-mismatch" style="display: none; color: red;">The investment amounts do not match. Please discuss and choose again.</p>
     <p id="investment-match" style="display: none; color: green;">The investment amounts match. You can now continue.</p>
     <div id="nextButtonDiv" style="display: none;">
@@ -43,49 +44,58 @@ Group Round {{ group_round }} of {{ total_group_rounds }}
 {% block scripts %}
 <script>
 var playerId = parseInt(document.getElementById('player-data').getAttribute('data-player-id'));
-var agreed = false;
+var proposed = false;
+var partnerProposed = false;
 var myInvestment = null;
 
 function updateInvestment(value) {
-    console.log("Slider value:", value);  // Log the value
-    value = parseFloat(value).toFixed(1);  // One decimal place
+    value = parseFloat(value).toFixed(1);
     document.getElementById('investment-value').innerHTML = value;
     document.getElementById('group_investment_input').value = value;
     document.getElementById('investment-slider').value = value;
     liveSend({type: 'investment', value: value});
 }
 
-function agreeOnInvestment() {
-    agreed = true;
+function proposeInvestment() {
+    proposed = true;
     myInvestment = parseFloat(document.getElementById('group_investment_input').value).toFixed(1);
-    liveSend({type: 'agree', value: myInvestment});
-    document.getElementById('agree-button').style.display = 'none';
+    liveSend({type: 'propose', value: myInvestment});
+    document.getElementById('propose-button').style.display = 'none';
     document.getElementById('investment-slider').disabled = true;
-    document.getElementById('you-agreed-message').style.display = 'block';
-    document.getElementById('nextButtonDiv').style.display = 'none';
+    document.getElementById('you-proposed-message').style.display = 'block';
+}
+
+function finalizeInvestment() {
+    liveSend({type: 'finalize', value: myInvestment});
+    document.getElementById('finalize-button').style.display = 'none';
+    document.getElementById('investment-slider').disabled = true;
+    document.getElementById('nextButtonDiv').style.display = 'block';
 }
 
 function liveRecv(data) {
     if (data.type === 'investment') {
-        if (!agreed) {
-            var value = parseFloat(data.value).toFixed(1);  // One decimal place
+        if (!proposed) {
+            var value = parseFloat(data.value).toFixed(1);
             document.getElementById('investment-value').innerHTML = value;
             document.getElementById('investment-slider').value = value;
             document.getElementById('group_investment_input').value = value;
         }
-    } else if (data.type === 'agree') {
+    } else if (data.type === 'propose') {
         if (data.id !== playerId) {
-            document.getElementById('partner-agreed-message').style.display = 'block';
-            document.getElementById('investment-slider').disabled = true;
-            document.getElementById('agree-button').disabled = true;
-            document.getElementById('nextButtonDiv').style.display = 'block';
+            partnerProposed = true;
+            document.getElementById('partner-proposed-message').style.display = 'block';
+            if (proposed) {
+                document.getElementById('finalize-button').style.display = 'block';
+            }
         }
+    } else if (data.type === 'both_proposed') {
+        document.getElementById('finalize-button').style.display = 'block';
     }
 }
 
 document.addEventListener('DOMContentLoaded', function() {
     var slider = document.getElementById('investment-slider');
-    var initialValue = slider.value || '0';  // Default to 1 if not set
+    var initialValue = slider.value || '0';
     updateInvestment(initialValue);
 });
 </script>
